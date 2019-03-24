@@ -61,10 +61,7 @@ app.use(express.static('./public'));
 const server = require('http').createServer(app);
 let io = socketIo.listen(server)
 io.on('connection', function(socket){
-    console.log(1)
     socket.on('news', (data)=>{
-        console.log(data)
-        console.log(2)
         io.emit('news',data)
     })
    

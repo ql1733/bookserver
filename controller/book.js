@@ -121,16 +121,12 @@ module.exports = {
                             key: respBody
                         })
                         Book.update({ isbn: isbn }, { img: respBody.key }, { upsert: true }, function(err, result) {
-                            if (err) {
-                                console.log(err)
+                            if (err) {                 
                             } else {
-                                console.log(result)
                             }
                         })
                         fs.unlink(repath);
                     } else {
-                        console.log(respInfo.statusCode);
-                        console.log(respBody);
                         res.json({
                             status: '0',
                             message: '上传失败'

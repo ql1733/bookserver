@@ -11,5 +11,5 @@
 npm install
 node index
 图片存储七牛云，测试账号一个月过期，前端vue
-https://github.com/zsb0303/bookplan
+https://github.com/ql1733/bookplan
 

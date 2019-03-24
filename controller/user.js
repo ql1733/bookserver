@@ -23,7 +23,6 @@ module.exports = {
                     message: "注册失败"
                 })
             } else {
-                // console.log(result)
                 req.session.user = result
                 res.json({
                     status: 1,
@@ -46,19 +45,19 @@ module.exports = {
                     if (result.password == password) {
                         req.session.user = result
                         res.json({
-                            status: '1',
+                            status: 1,
                             message: '登录成功',
                             result: result
                         })
                     } else {
                         res.json({
-                            status: '0',
-                            message: '秘密错误'
+                            status: 0,
+                            message: '密码错误'
                         })
                     }
                 } else {
                     res.json({
-                        status: '0',
+                        status: 0,
                         message: '用户不存在'
                     })
                 }
@@ -70,35 +69,27 @@ module.exports = {
         User.findOne({ name: name }, function(err, result) {
             if (err) {
                 res.json({
-                    status: '0',
+                    status: 0,
                     message: '登出失败'
                 })
             } else {
                 req.session.user = null
                 res.json({
-                    status: '1',
+                    status: 1,
                     message: '登出成功'
                 })
             }
         })
     },
     upload: function(req, res, next) {
-        // console.log(req)
-        // console.log(req.url)
         let queryUrl = url.parse(req.url, true, true)
-            // console.log()
-            // console.log(req.body)
         let name = req.session.user.name
-            // console.log(user_id)
         const form = formidable.IncomingForm()
-            // console.log(form)
         form.uploadDir = './public/img';
         let self = this
         var accessKey = 'aVAZnrOFNacZPmjePoG07OhqiPjx49l6wEAEA7N3';
         var secretKey = 'J6pfPcxD4ln6ubuGtZn3fieNt3TXfvWOIvqQI2y8';
         var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
-
-
         var options = {
             scope: 'book-read',
         };
@@ -121,7 +112,7 @@ module.exports = {
                     respBody, respInfo) {
                     if (respErr) {
                         res.json({
-                            status: '0',
+                            status: 0,
                             message: '上传失败'
                         })
                         fs.unlink(repath);
@@ -129,26 +120,22 @@ module.exports = {
 
                     }
                     if (respInfo.statusCode == 200) {
-                        //console.log(respBody);
-                        // console.log(user_id)
                         res.json({
-                            status: '1',
+                            status: 1,
                             message: '上传成功',
                             key: respBody
                         })
                         User.update({ name: name }, { avator: respBody.key }, { upsert: true }, function(err, result) {
                             if (err) {
-                                console.log(err)
+                               // console.log(err)
                             } else {
-                                console.log(result)
+                               // console.log(result)
                             }
                         })
                         fs.unlink(repath);
                     } else {
-                        console.log(respInfo.statusCode);
-                        console.log(respBody);
                         res.json({
-                            status: '0',
+                            status: 0,
                             message: '上传失败'
                         })
                         fs.unlink(repath);
